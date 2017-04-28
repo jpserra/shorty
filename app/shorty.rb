@@ -1,5 +1,6 @@
 require 'dry-container'
 require 'faker'
+require 'shorty/config'
 
 module Shorty
   module_function
@@ -36,8 +37,11 @@ module Shorty
     end
 
     self.eagerly_initialize(container) if eagerly_initialize
-
     container
+  end
+
+  def config
+    @config ||= Config.new
   end
 
   def eagerly_initialize(container)

@@ -4,7 +4,7 @@ require 'faker'
 module Shorty
   module Interactors
     class ShortcodeGenerator
-      RANDOM_SHORTCODE_REGEX = /^[0-9a-zA-Z_]{6}$/
+      RANDOM_SHORTCODE_REGEX = ::Shorty.config[:random_shortcode_regex]
 
       attr_reader :shorties_repository
       attr_reader :generator

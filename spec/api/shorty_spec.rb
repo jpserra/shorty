@@ -102,33 +102,48 @@ describe Shorty::Shorty do
     end
 
     context 'with invalid shortcode' do
+      before do
+        post '/shorten', url: 'url', shortcode: shortcode
+      end
+      let(:shorty) { Support::Shorties.existing_shorty }
+      let(:shortcode) { shorty.shortcode }
+
       let(:invalid_shortcode_error) do
         { error: 'The shortcode fails to meet the following regexp: ^[0-9a-zA-Z_]{4,}$' }
       end
 
-      it 'returns error' do
-        post '/shorten', url: 'url', shortcode: 'a2'
+      context 'because it is too small' do
+        let(:shortcode) { 'a2' }
 
-        expect(last_response.status).to eq(422)
-        expect(MultiJson.load(last_response.body, symbolize_keys: true))
-          .to eq(invalid_shortcode_error)
-      end
-    end
-
-    context 'with existing shortcode' do
-      let(:shorty) { Support::Shorties.existing_shorty }
-      let(:existing_shortcode_error) do
-        {
-          error: 'The desired shortcode is already in use. Shortcodes are case-sensitive.'
-        }
+        it 'returns invalid error' do
+          expect(last_response.status).to eq(422)
+          expect(MultiJson.load(last_response.body, symbolize_keys: true))
+            .to eq(invalid_shortcode_error)
+        end
       end
 
-      it 'returns error' do
-        post '/shorten', url: 'url', shortcode: shorty.shortcode
+      context 'because it contains invalid chars' do
+        let(:shortcode) { 'a2ad?' }
 
-        expect(last_response.status).to eq(409)
-        expect(MultiJson.load(last_response.body, symbolize_keys: true))
-          .to eq(existing_shortcode_error)
+        it 'returns invalid error' do
+          expect(last_response.status).to eq(422)
+          expect(MultiJson.load(last_response.body, symbolize_keys: true))
+            .to eq(invalid_shortcode_error)
+        end
+      end
+
+      context 'because it already exists' do
+        let(:existing_shortcode_error) do
+          {
+            error: 'The desired shortcode is already in use. Shortcodes are case-sensitive.'
+          }
+        end
+
+        it 'returns existing error' do
+          expect(last_response.status).to eq(409)
+          expect(MultiJson.load(last_response.body, symbolize_keys: true))
+            .to eq(existing_shortcode_error)
+        end
       end
     end
   end

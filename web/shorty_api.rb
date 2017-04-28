@@ -9,7 +9,7 @@ module Shorty
       desc 'Create a shorty'
       params do
         requires :url, type: String, allow_blank: false, fail_fast: true, message: 'is not present'
-        optional :shortcode, shortcode: /^[0-9a-zA-Z_]{4,}$/, fail_fast: true
+        optional :shortcode, shortcode: ::Shorty.config[:valid_shortcode_regex], fail_fast: true
       end
       post do
         present System[:create_shorty].call(url: params[:url], shortcode: params[:shortcode]), with: Entities::ShortyCode

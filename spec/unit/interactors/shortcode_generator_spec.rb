@@ -5,7 +5,7 @@ require 'support/shorties'
 require 'faker'
 
 RSpec.describe Shorty::Interactors::ShortcodeGenerator do
-  SHORTCODE_REGEX = /^[0-9a-zA-Z_]{6}$/
+  SHORTCODE_REGEX = Shorty.config[:random_shortcode_regex]
 
   subject(:shortcode_generator) do
     described_class.new(
