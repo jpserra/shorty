@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'shorty/interactors/create_shorty'
 require 'shorty/interactors/shortcode_generator'
 require 'shorty/repositories/shorties_repository'

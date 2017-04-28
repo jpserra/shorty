@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'shorty/interactors/find_shorty'
 require 'shorty/repositories/shorties_repository'
 

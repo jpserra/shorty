@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'shorty/interactors/find_shorty_stats'
 require 'shorty/repositories/shorties_repository'
 require 'support/shorties'
