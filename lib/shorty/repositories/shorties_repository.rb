@@ -15,8 +15,10 @@ module Shorty
       entity = find_by_shortcode shortcode
       return false unless entity
 
-      entity.access_count += 1
-      entity.save
+      entity.atomically do |doc|
+        doc.inc(access_count: 1)
+        doc.set(updated_at: Time.now)
+      end
 
       entity
     end
