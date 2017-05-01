@@ -1,5 +1,5 @@
 require 'dry-container'
-require 'faker'
+require 'securerandom'
 require 'shorty/config'
 
 module Shorty
@@ -32,8 +32,8 @@ module Shorty
     container.register(:find_shorty_stats, memoize: true) do
       Interactors::FindShortyStats.new(container)
     end
-    container.register(:faker, memoize: true) do
-      Faker::Base
+    container.register(:random_generator, memoize: true) do
+      SecureRandom
     end
 
     self.eagerly_initialize(container) if eagerly_initialize

@@ -1,17 +1,14 @@
 require 'shorty/repositories/shorties_repository'
-require 'faker'
 
 module Shorty
   module Interactors
     class ShortcodeGenerator
-      RANDOM_SHORTCODE_REGEX = ::Shorty.config[:random_shortcode_regex]
-
       attr_reader :shorties_repository
-      attr_reader :generator
+      attr_reader :random_generator
 
       def initialize(environment)
         @shorties_repository = environment[:shorties_repository]
-        @generator = environment[:faker]
+        @random_generator = environment[:random_generator]
       end
 
       def call
@@ -27,7 +24,7 @@ module Shorty
       end
 
       def random_shortcode
-        generator.regexify(RANDOM_SHORTCODE_REGEX)
+        random_generator.urlsafe_base64(4).tr('-', '_')
       end
     end
   end

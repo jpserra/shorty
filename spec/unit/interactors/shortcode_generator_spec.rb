@@ -2,15 +2,14 @@ require 'shorty/interactors/shortcode_generator'
 require 'shorty/repositories/shorties_repository'
 require 'shorty/interactors/find_shorty'
 require 'support/shorties'
-require 'faker'
 
 RSpec.describe Shorty::Interactors::ShortcodeGenerator do
-  SHORTCODE_REGEX = Shorty.config[:random_shortcode_regex]
+  SHORTCODE_REGEX = /^[0-9a-zA-Z_]{6}$/
 
   subject(:shortcode_generator) do
     described_class.new(
       shorties_repository: shorties_repository,
-      faker: faker
+      random_generator: random_generator
     )
   end
 
@@ -18,8 +17,8 @@ RSpec.describe Shorty::Interactors::ShortcodeGenerator do
     instance_double(Shorty::ShortiesRepository)
   end
 
-  let(:faker) do
-    Faker::Base
+  let(:random_generator) do
+    SecureRandom
   end
 
   let(:shorty_as_entity) do
@@ -36,9 +35,9 @@ RSpec.describe Shorty::Interactors::ShortcodeGenerator do
         expect(shorties_repository)
           .to receive(:find_by_shortcode)
           .and_return(false)
-        expect(faker)
-          .to receive(:regexify)
-          .with(SHORTCODE_REGEX)
+        expect(random_generator)
+          .to receive(:urlsafe_base64)
+          .with(4)
           .and_call_original
 
         expect(shortcode).to match SHORTCODE_REGEX
@@ -53,9 +52,9 @@ RSpec.describe Shorty::Interactors::ShortcodeGenerator do
         expect(shorties_repository)
           .to receive(:find_by_shortcode)
           .and_return(shorty_as_entity, false)
-        expect(faker)
-          .to receive(:regexify)
-          .with(SHORTCODE_REGEX)
+        expect(random_generator)
+          .to receive(:urlsafe_base64)
+          .with(4)
           .and_return(existing_code, new_code)
 
         expect(shortcode).not_to eq existing_code
