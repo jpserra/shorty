@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.4.1'
 
+gem 'activesupport', '= 5.0.2'
 gem 'dry-container'
 gem 'grape'
 gem 'grape-entity'
