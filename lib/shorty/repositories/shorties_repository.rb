@@ -11,7 +11,7 @@ module Shorty
       false
     end
 
-    def find_and_update_shortcode(shortcode)
+    def find_and_increment_shortcode(shortcode)
       entity = find_by_shortcode shortcode
       return false unless entity
 

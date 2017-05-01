@@ -27,13 +27,13 @@ describe Shorty::ShortiesRepository do
       end
     end
 
-    context '#find_and_update_shortcode' do
+    context '#find_and_increment_shortcode' do
       context 'when shorty does not exist' do
         let(:shorty) do
           Support::Shorties.new_shorty
         end
         it 'returns false' do
-          expect(subject.find_and_update_shortcode(shorty.shortcode)). to be false
+          expect(subject.find_and_increment_shortcode(shorty.shortcode)). to be false
         end
       end
 
@@ -43,7 +43,7 @@ describe Shorty::ShortiesRepository do
         end
 
         it 'returns shorty with access_count incremented' do
-          result = subject.find_and_update_shortcode(shorty.shortcode)
+          result = subject.find_and_increment_shortcode(shorty.shortcode)
 
           expect(result.shortcode).to eq shorty.shortcode
           expect(result.access_count).to eq shorty.access_count + 1
@@ -66,7 +66,7 @@ describe Shorty::ShortiesRepository do
           end
 
           it 'returns shorty' do
-            result = subject.find_and_update_shortcode(shorty.shortcode)
+            result = subject.find_and_increment_shortcode(shorty.shortcode)
 
             expect(result.shortcode).to eq shorty.shortcode
             expect(result.url).to eq shorty.url

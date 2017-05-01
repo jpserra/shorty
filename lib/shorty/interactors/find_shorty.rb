@@ -10,7 +10,7 @@ module Shorty
       end
 
       def call(shortcode:)
-        shorty = shorties_repository.find_and_update_shortcode(shortcode)
+        shorty = shorties_repository.find_and_increment_shortcode(shortcode)
 
         shorty || shorty_not_found
       end

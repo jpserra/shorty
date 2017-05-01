@@ -30,7 +30,7 @@ RSpec.describe Shorty::Interactors::FindShorty do
     context 'when successfully fetch the shorty' do
       it 'returns the shorty' do
         expect(shorties_repository)
-          .to receive(:find_and_update_shortcode)
+          .to receive(:find_and_increment_shortcode)
           .with(shortcode)
           .and_return(shorty_as_entity)
 
@@ -41,7 +41,7 @@ RSpec.describe Shorty::Interactors::FindShorty do
     context 'when the shorty does not exists' do
       it 'returns SHORTY_NOT_FOUND error code' do
         expect(shorties_repository)
-          .to receive(:find_and_update_shortcode)
+          .to receive(:find_and_increment_shortcode)
           .with(shortcode)
           .and_return(false)
 
